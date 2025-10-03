@@ -17,12 +17,16 @@ public class DnsTUI {
         // add command
         if (t.startsWith("add ")) {
             String[] toks = t.split("\\s+", 3);
-            if (toks.length != 3) return null;
+            if (toks.length != 3) return new ErreurCommande("ERREUR : usage de add : add <ip> <nom.qualifie>");
             String a = toks[1];
             String b = toks[2];
-            AdresseIP ip = AdresseIP.parse(a);
-            NomMachine nm = NomMachine.parse(b);
-            return new AddCommande(ip, nm);
+            try {
+                AdresseIP ip = AdresseIP.parse(a);
+                NomMachine nm = NomMachine.parse(b);
+                return new AddCommande(ip, nm);
+            } catch (IllegalArgumentException e) {
+                return new ErreurCommande("ERREUR : parametres invalides pour add : " + e.getMessage());
+            }
         }
 
         // ls command: ls [-a] domain
@@ -36,7 +40,7 @@ public class DnsTUI {
                 all = true;
                 domain = toks[2];
             } else {
-                return null;
+                return new ErreurCommande("ERREUR : usage de ls : ls [-a] <domaine>");
             }
             return new LsCommande(domain, all);
         }
@@ -52,7 +56,7 @@ public class DnsTUI {
             NomMachine nm = NomMachine.parse(t);
             return new LookupByNameCommande(nm);
         } catch (IllegalArgumentException e) {
-            return null;
+            return new ErreurCommande("ERREUR : commande non reconnue : '" + t + "'");
         }
     }
 

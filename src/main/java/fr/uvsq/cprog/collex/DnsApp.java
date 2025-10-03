@@ -32,11 +32,6 @@ public class DnsApp {
             String line;
             while ((line = reader.readLine()) != null) {
                 Commande c = tui.nextCommande(line);
-                if (c == null) {
-                    writer.write("ERREUR : commande invalide" + System.lineSeparator());
-                    writer.flush();
-                    continue;
-                }
                 try {
                     String result = c.execute(dns);
                     if (result == null) {
