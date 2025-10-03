@@ -22,7 +22,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -71,5 +71,28 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+          <!-- Use the Google style configuration bundled with Checkstyle -->
+          <configLocation>google_checks.xml</configLocation>
+          <!-- Do not fail the build automatically for now; the goal is to run the checks during validate -->
+          <failOnViolation>false</failOnViolation>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+        <executions>
+          <execution>
+            <id>validate-checkstyle</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>
